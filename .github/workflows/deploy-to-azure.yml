@@ -27,15 +27,15 @@ jobs:
 
     - name: Build docker image
       run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }} /react-app:latest .
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/my-react-app:latest .
 
     - name: Push docker image to ACR
       run: |
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/react-app:latest
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/my-react-app:latest
 
     - name: deploy to azure app service staging slot
       uses: azure/webapps-deploy@v2
       with:
          app-name: my-react-app-1234
          slot-name: staging
-         images: ${{ secrets.ACR_LOGIN_SERVER }}/react-app:latest
+         images: ${{ secrets.ACR_LOGIN_SERVER }}/my-react-app:latest
