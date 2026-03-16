@@ -10,28 +10,4 @@ Currently, two official plugins are available:
 The CI/CD pipeline:-
 1. The git Action workflow to create and move a docker image to DockerHub.
 2. The git action workflow to build and push image to ACR, then App service pulls image. 
-   Developer Push
-      │
-      ▼
-GitHub Repository
-      │
-      ▼
-GitHub Actions
-      │
-      ▼
-Build Docker Image
-      │
-      ▼
-Push Image → Azure Container Registry
-      │
-      ▼
-Azure App Service (Staging Slot)
-      │
-      ▼
-Testing
-      │
-      ▼
-Slot Swap
-      │
-      ▼
-Production
+   Developer Push --> GitHub Repository --> GitHub Actions --> Build Docker Image --> Push Image → Azure Container Registry --> Azure App Service (Staging Slot) --> Testing --> Slot Swap (Production)
