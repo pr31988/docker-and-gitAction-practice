@@ -1,0 +1,44 @@
+name: buid Docker Image and deploy to azure ACR CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to Azure 
+      uses: azure/login@v1
+      with: 
+         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+
+    - name: Login to ACR  
+      uses: azure/docker-login@v1
+      with:
+         login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+         username: ${{ secrets.ACR_USERNAME }}
+         password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build docker image
+      run: |
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }} /react-app:latest .
+
+    - name: Push docker image to ACR
+      run: |
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/react-app:latest
+
+    - name: deploy to azure app service staging slot
+      uses: azure/webapps-deploy@v2
+      with:
+         app-name: my-react-app-1234
+         slot-name: staging
+         images: ${{ secrets.ACR_LOGIN_SERVER }}/react-app:latest
+        
