@@ -3,6 +3,9 @@ name: buid Docker Image and deploy to azure ACR CI
 on:
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**' 
 
 jobs:
 
